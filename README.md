@@ -21,6 +21,49 @@ ClauseGuard serves as an automated contract co-pilot that:
 
 ---
 
+## Challenge Submission Details
+
+### 1. Chosen Vertical & Persona
+- **Vertical**: **Legal Tech & Consumer Rights Protection**
+- **Target Personas**: Everyday consumers, residential tenants, independent contractors / freelancers, students, and small business operators.
+- **Why this Vertical**: Standard-form "contracts of adhesion" represent one of the most asymmetrical power imbalances in modern society. Over 90% of signers never read terms of service or apartment leases due to impenetrable legalese, yet bear severe financial liabilities when disputes arise. ClauseGuard levels this playing field by turning passive signers into empowered negotiators.
+
+### 2. Approach and Logic
+ClauseGuard operates on a multi-stage cognitive pipeline designed for high accuracy and defensible analysis:
+1. **Document Ingestion & Multi-Format Parsing**:
+   - Accepts raw text, PDF, `.docx`, `.md`, or pre-configured test agreements.
+   - Extracts plain text client-side or streams binary documents directly to the backend Gemini model for OCR and layout-aware processing.
+2. **Contextual Persona Conditioning**:
+   - The user selects an **Audit Perspective** (e.g., *Residential Tenant*, *Freelancer*, *Consumer*, *Small Business*).
+   - The evaluation rubric dynamically shifts its risk sensitivity: an IP assignment clause is benign for a residential tenant but critical for a software freelancer; an automatic evergreen renewal is fatal for a short-term renter.
+3. **Dual Analysis Engine**:
+   - **Primary AI Engine**: Server-side Google Gemini Flash with strict JSON Schema output. Extracts clauses, categorizes risks (Hidden Trap, Caution, Standard), writes plain-English explanations, and drafts redline revisions.
+   - **Offline Heuristic Engine**: A deterministic regex and pattern-matching backup engine (`heuristicAuditor.ts`) that runs locally if API quotas are exceeded or when testing offline, guaranteeing zero-downtime reliability.
+4. **Fairness Scoring Metric (0–100)**:
+   - Starts at 100 and applies weighted deductions:
+     - 🔴 **Hidden Traps** (Predatory/Uncapped): -18 points each
+     - 🟡 **Cautions** (One-sided/Ambiguous): -8 points each
+     - 🟢 **Standard Terms**: 0 deductions
+   - Normalized into clear qualitative tiers: *Fair & Balanced* (80-100), *Moderate Caution* (60-79), *High Risk* (40-59), and *Predatory / Critical Risk* (<40).
+5. **Actionable Empowerment Outputs**:
+   - Generates redlines, interactive pre-signing checklists, non-confrontational counter-proposal emails, an "Ask a Lawyer" consultation prep sheet, and downloadable multi-page PDF reports.
+
+### 3. How the Solution Works
+1. **Upload or Paste**: User uploads a document or chooses from pre-loaded real-world sample contracts (Freelance Master Services Agreement, Apartment Lease, or Software SaaS Terms).
+2. **Instant Scan**: In seconds, the application decomposes the contract into atomic clauses and computes the fairness breakdown.
+3. **Side-by-Side Review**: Users review original clauses side-by-side with plain-English translations and recommended counter-amendments.
+4. **Prepare for Counsel or Counterparty**:
+   - Launch **"Ask a Lawyer"** to simulate an attorney prep session with focused questions, legal doctrines, and an evidence checklist.
+   - Generate a customized, courteous negotiation email ready to send to the counterparty.
+   - Download a client-side compiled PDF memorandum.
+
+### 4. Assumptions Made
+- **Informational & Educational Scope**: The assistant explicitly acts as a document preparation and education tool, **not** formal legal representation. All outputs carry prominent statutory disclaimers.
+- **Common Law Baseline**: Unless a specific jurisdiction is explicitly parsed in governing law clauses, evaluation logic defaults to widely adopted US/Commonwealth common-law contract principles (e.g., unconscionability, mutual consideration, duty of good faith).
+- **Security & Privacy**: Zero long-term document retention on external servers. Documents are processed in-memory and ephemeral sessions, preventing private contract data leakage.
+
+---
+
 ## Key Features
 
 ### 1. Document Upload & Multi-Audience Profiling
