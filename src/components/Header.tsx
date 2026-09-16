@@ -47,13 +47,16 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Quick Audience Lens & Disclaimer Badge */}
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            <div className="flex items-center gap-1.5 text-xs text-slate-500 bg-slate-100/80 px-2.5 py-1.5 rounded-lg border border-slate-200/60">
-              <span className="font-medium text-slate-700">Audit Perspective:</span>
+            <div className="flex items-center gap-1.5 text-xs text-slate-700 bg-slate-100/80 px-2.5 py-1.5 rounded-lg border border-slate-200/80">
+              <label htmlFor="audience-selector" className="font-semibold text-slate-800 cursor-pointer">
+                Audit Perspective:
+              </label>
               <select
                 id="audience-selector"
+                aria-label="Target audience perspective"
                 value={targetAudience}
                 onChange={(e) => onAudienceChange(e.target.value)}
-                className="bg-transparent font-semibold text-slate-900 focus:outline-none cursor-pointer"
+                className="bg-transparent font-bold text-slate-900 focus:outline-none cursor-pointer"
               >
                 {audiences.map((aud) => (
                   <option key={aud.id} value={aud.id}>
@@ -63,8 +66,8 @@ export const Header: React.FC<HeaderProps> = ({
               </select>
             </div>
 
-            <div className="hidden md:flex items-center gap-1.5 text-xs text-amber-700 bg-amber-50 px-2.5 py-1.5 rounded-lg border border-amber-200">
-              <Info className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+            <div className="hidden md:flex items-center gap-1.5 text-xs text-amber-900 bg-amber-50 px-2.5 py-1.5 rounded-lg border border-amber-300">
+              <Info className="w-3.5 h-3.5 text-amber-700 shrink-0" />
               <span>Prep tool • Not formal legal advice</span>
             </div>
           </div>
@@ -72,7 +75,7 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Quick Sample Selector Bar */}
         <div className="mt-2.5 pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2">
-          <span className="text-xs font-medium text-slate-400 flex items-center gap-1">
+          <span className="text-xs font-semibold text-slate-600 flex items-center gap-1">
             <Sparkles className="w-3 h-3 text-emerald-600" /> Quick Samples:
           </span>
           <div className="flex flex-wrap items-center gap-1.5">

@@ -156,7 +156,7 @@ export const LegalGlossary: React.FC<LegalGlossaryProps> = ({
           </div>
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-600">
                 Educational Resource
               </span>
               {detectedTermIds.size > 0 && (

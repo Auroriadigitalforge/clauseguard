@@ -121,10 +121,11 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
           <input
             id="contract-title-input"
             type="text"
+            aria-label="Contract or Document Title"
             placeholder="Contract / Document Name (e.g. Skyline Apt Lease 2026)"
             value={documentTitle}
             onChange={(e) => onTitleChange(e.target.value)}
-            className="w-full bg-transparent font-semibold text-slate-900 placeholder:text-slate-400 text-sm sm:text-base focus:outline-none focus:ring-0"
+            className="w-full bg-transparent font-semibold text-slate-900 placeholder:text-slate-500 text-sm sm:text-base focus:outline-none focus:ring-0"
           />
         </div>
 
@@ -175,6 +176,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
             <input
               ref={fileInputRef}
               type="file"
+              aria-label="Upload contract file in PDF or text format"
               accept=".pdf,.txt,.md,.doc,.docx"
               onChange={handleFileInputChange}
               className="hidden"
@@ -213,11 +215,12 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
         <div className="relative">
           <textarea
             id="contract-textarea"
+            aria-label="Paste contract clauses or agreement text"
             rows={activeTab === 'file' ? 6 : 10}
             placeholder="Paste contract clauses, residential lease terms, freelance scope of work, gym membership rules, or app terms of service here..."
             value={documentText}
             onChange={(e) => onTextChange(e.target.value)}
-            className="w-full font-mono text-xs sm:text-sm text-slate-800 bg-slate-50/40 p-4 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:bg-white focus:outline-none leading-relaxed transition-all resize-y"
+            className="w-full font-mono text-xs sm:text-sm text-slate-800 placeholder:text-slate-500 bg-slate-50/40 p-4 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:bg-white focus:outline-none leading-relaxed transition-all resize-y"
           />
           {documentText && (
             <button

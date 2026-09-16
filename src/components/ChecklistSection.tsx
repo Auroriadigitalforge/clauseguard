@@ -36,7 +36,7 @@ export const ChecklistSection: React.FC<ChecklistSectionProps> = ({ checklist, d
       {/* Header with completion counter */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
         <div>
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-600">
             Section 3 • Actionable Checklist & Next Steps
           </span>
           <h3 className="text-xl font-bold text-slate-900 tracking-tight mt-0.5">
