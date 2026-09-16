@@ -10,13 +10,13 @@
 
 ## Key Features
 
-*  Instant Document Ingestion:** Seamlessly upload dense legal PDFs (residential leases, freelance agreements, app terms of service).
-*  Traffic-Light Risk Stratification:** Automatically categorizes clauses into:
+*  **Instant Document Ingestion:** Seamlessly upload dense legal PDFs (residential leases, freelance agreements, app terms of service).
+*  **Traffic-Light Risk Stratification:** Automatically categorizes clauses into:
   *  **SAFE:** Standard, balanced terms.
   *  **CAUTION:** Ambiguous or slightly unfavorable provisions.
   *  **HIDDEN TRAP:** Predatory clauses, unfair penalties, automatic lock-ins, or hidden fees.
-*  Plain-English Translation:** Strips away dense legalese and translates complex legal obligations into clear, easily digestible explanations.
-*  Actionable Checklists:** Generates concrete next steps and questions to discuss before signing or negotiating a contract.
+*  **Plain-English Translation:** Strips away dense legalese and translates complex legal obligations into clear, easily digestible explanations.
+*  **Actionable Checklists:** Generates concrete next steps and questions to discuss before signing or negotiating a contract.
 
 ---
 
@@ -35,5 +35,5 @@ Follow these steps to run ClauseGuard locally on your machine:
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/YOUR_USERNAME/clauseguard.git](https://github.com/YOUR_USERNAME/clauseguard.git)
+   git clone [https://github.com/Auroriadigitalforge/clauseguard.git](https://github.com/Auroriadigitalforge/clauseguard.git)
    cd clauseguard
