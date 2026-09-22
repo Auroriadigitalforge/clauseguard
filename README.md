@@ -217,7 +217,14 @@ To launch the production server:
 ```bash
 npm run start
 ```
+## Testing & Performance Optimization
 
+### Testing Strategy
+ClauseGuard utilizes **Vitest** and **React Testing Library** to validate component rendering, state management, and user interaction flows. 
+- **Unit & Integration Tests**: Verify that core components (such as `App.tsx`, document uploaders, and risk auditors) mount correctly and handle data states safely.
+- **Run Tests Locally**:
+  ```bash
+  npm run test
 ---
 
 ## API Endpoints
