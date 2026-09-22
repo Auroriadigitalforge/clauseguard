@@ -33,7 +33,7 @@ describe('DocumentUploader Component', () => {
     expect(textarea).toBeInTheDocument();
 
     // Verify Audit button is rendered and disabled when text is empty
-    const auditButton = screen.getByRole('button', { name: /audit with clauseguard/i });
+    const auditButton = screen.getByRole('button', { name: /audit contract clauses with clauseguard/i });
     expect(auditButton).toBeInTheDocument();
     expect(auditButton).toBeDisabled();
   });
@@ -59,7 +59,7 @@ describe('DocumentUploader Component', () => {
       />
     );
 
-    const auditButton = screen.getByRole('button', { name: /audit with clauseguard/i });
+    const auditButton = screen.getByRole('button', { name: /audit contract clauses with clauseguard/i });
     expect(auditButton).not.toBeDisabled();
 
     fireEvent.click(auditButton);
@@ -78,20 +78,20 @@ describe('DocumentUploader Component', () => {
     const loadingText = screen.getByText(/auditing legal clauses.../i);
     expect(loadingText).toBeInTheDocument();
 
-    const auditButton = screen.getByRole('button', { name: /auditing legal clauses.../i });
+    const auditButton = screen.getByRole('button', { name: /auditing legal clauses in document/i });
     expect(auditButton).toBeDisabled();
   });
 
   it('allows switching between Paste Text and Upload File tabs', () => {
     render(<DocumentUploader {...defaultProps} />);
 
-    const uploadTab = screen.getByRole('button', { name: /upload file/i });
+    const uploadTab = screen.getByRole('tab', { name: /upload file/i });
     fireEvent.click(uploadTab);
 
     // Dropzone instructions should appear
     expect(screen.getByText(/drop your contract here or click to browse/i)).toBeInTheDocument();
 
-    const pasteTab = screen.getByRole('button', { name: /paste text/i });
+    const pasteTab = screen.getByRole('tab', { name: /paste text/i });
     fireEvent.click(pasteTab);
     expect(screen.getByLabelText(/paste contract clauses or agreement text/i)).toBeInTheDocument();
   });

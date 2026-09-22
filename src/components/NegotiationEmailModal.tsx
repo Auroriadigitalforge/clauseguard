@@ -62,19 +62,25 @@ Best regards,
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="negotiation-modal-title"
+      aria-describedby="negotiation-modal-desc"
+      className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200"
+    >
       <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <header className="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600">
-              <Mail className="w-4 h-4" />
+              <Mail className="w-4 h-4" aria-hidden="true" />
             </div>
             <div>
-              <h3 className="font-bold text-slate-900 text-base">
+              <h3 id="negotiation-modal-title" className="font-bold text-slate-900 text-base">
                 Polite Negotiation Counter-Proposal
               </h3>
-              <p className="text-xs text-slate-500">
+              <p id="negotiation-modal-desc" className="text-xs text-slate-500">
                 Ready-to-send template addressing your flagged clauses without conflict
               </p>
             </div>
@@ -83,22 +89,24 @@ Best regards,
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-lg transition-colors"
+            aria-label="Close negotiation proposal modal"
+            className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5" aria-hidden="true" />
           </button>
-        </div>
+        </header>
 
         {/* Customization bar */}
         <div className="px-5 py-2.5 bg-indigo-50/50 border-b border-indigo-100 flex items-center justify-between text-xs">
-          <span className="font-medium text-indigo-900">Address recipient as:</span>
-          <div className="flex items-center gap-1">
+          <span className="font-medium text-indigo-900" id="recipient-label">Address recipient as:</span>
+          <div className="flex items-center gap-1" role="group" aria-labelledby="recipient-label">
             {(['Landlord', 'Client', 'Provider', 'Company'] as const).map((role) => (
               <button
                 key={role}
                 type="button"
+                aria-pressed={recipientRole === role}
                 onClick={() => setRecipientRole(role)}
-                className={`px-2 py-1 rounded font-medium transition-colors ${
+                className={`px-2 py-1 rounded font-medium transition-colors focus:outline-none focus:ring-1 focus:ring-indigo-500 ${
                   recipientRole === role
                     ? 'bg-indigo-600 text-white'
                     : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
@@ -114,6 +122,7 @@ Best regards,
         <div className="flex-1 overflow-y-auto p-5 sm:p-6 bg-slate-50/40">
           <textarea
             readOnly
+            aria-label="Generated negotiation counter-proposal email body"
             value={emailText}
             rows={15}
             className="w-full bg-white p-4 rounded-xl border border-slate-200 font-sans text-xs sm:text-sm text-slate-800 leading-relaxed focus:outline-none resize-none font-mono"
@@ -126,16 +135,17 @@ Best regards,
           <button
             type="button"
             onClick={handleCopy}
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors shadow-2xs"
+            aria-label="Copy negotiation email proposal to clipboard"
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors shadow-2xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             {hasCopied ? (
               <>
-                <Check className="w-4 h-4" />
+                <Check className="w-4 h-4" aria-hidden="true" />
                 <span>Copied to Clipboard!</span>
               </>
             ) : (
               <>
-                <Copy className="w-4 h-4" />
+                <Copy className="w-4 h-4" aria-hidden="true" />
                 <span>Copy Negotiation Email</span>
               </>
             )}

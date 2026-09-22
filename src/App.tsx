@@ -154,9 +154,9 @@ export default function App() {
       setTimeout(() => {
         reportRef.current?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
-    } catch (err: any) {
-      console.error('Audit failed:', err);
-      let msg = err.message || 'Failed to complete legal audit. Please check your document and try again.';
+    } catch (err: unknown) {
+      const errorObj = err instanceof Error ? err : new Error(String(err));
+      let msg = errorObj.message || 'Failed to complete legal audit. Please check your document and try again.';
       try {
         const jsonMatch = msg.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
@@ -165,7 +165,9 @@ export default function App() {
             msg = parsed.error.message;
           }
         }
-      } catch (_) {}
+      } catch {
+        // Fallback to error message string
+      }
       setErrorMessage(msg);
     } finally {
       setIsLoading(false);
@@ -189,9 +191,9 @@ export default function App() {
       const result = await downloadAuditPdf(auditResult, documentText);
       setPdfDownloadFeedback(`Saved ${result.fileName} (${result.pageCount} pages)`);
       setTimeout(() => setPdfDownloadFeedback(null), 4000);
-    } catch (err: any) {
-      console.error('Failed to generate PDF:', err);
-      setErrorMessage(`Failed to export PDF: ${err.message || 'Unknown error'}`);
+    } catch (err: unknown) {
+      const errorObj = err instanceof Error ? err : new Error(String(err));
+      setErrorMessage(`Failed to export PDF: ${errorObj.message || 'Unknown error'}`);
     } finally {
       setIsGeneratingPdf(false);
     }
@@ -369,13 +371,16 @@ export default function App() {
             />
 
             {/* Section 2: Key Clauses & Hidden Traps */}
-            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7 space-y-6">
+            <section
+              aria-labelledby="section-risk-audit-title"
+              className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7 space-y-6"
+            >
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-100">
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-slate-600">
                     Section 2 • The Risk Audit
                   </span>
-                  <h3 className="text-xl font-bold text-slate-900 tracking-tight mt-0.5">
+                  <h3 id="section-risk-audit-title" className="text-xl font-bold text-slate-900 tracking-tight mt-0.5">
                     Key Clauses & Hidden Traps
                   </h3>
                   <p className="text-xs text-slate-500 mt-0.5">
@@ -385,11 +390,11 @@ export default function App() {
 
                 {/* Search Bar */}
                 <div className="relative w-full md:w-64">
-                  <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                  <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" aria-hidden="true" />
                   <input
                     id="clause-search-input"
-                    type="text"
-                    aria-label="Search clauses or terms"
+                    type="search"
+                    aria-label="Search contract clauses, translations, or identified risks"
                     placeholder="Search clauses or terms..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -399,12 +404,18 @@ export default function App() {
               </div>
 
               {/* Risk Filter Tabs */}
-              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+              <div
+                role="tablist"
+                aria-label="Filter clauses by risk level"
+                className="flex flex-wrap items-center gap-1.5 sm:gap-2"
+              >
                 <button
                   id="filter-all"
+                  role="tab"
+                  aria-selected={activeFilter === 'ALL'}
                   type="button"
                   onClick={() => setActiveFilter('ALL')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 ${
                     activeFilter === 'ALL'
                       ? 'bg-slate-900 text-white shadow-xs'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200/80 hover:text-slate-900'
@@ -414,48 +425,54 @@ export default function App() {
                 </button>
                 <button
                   id="filter-traps"
+                  role="tab"
+                  aria-selected={activeFilter === 'HIDDEN_TRAP'}
                   type="button"
                   onClick={() => setActiveFilter('HIDDEN_TRAP')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-rose-500 ${
                     activeFilter === 'HIDDEN_TRAP'
                       ? 'bg-rose-600 text-white shadow-xs'
                       : 'bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200/80'
                   }`}
                 >
-                  <ShieldAlert className="w-3.5 h-3.5" />
+                  <ShieldAlert className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>🔴 Hidden Traps ({counts.traps})</span>
                 </button>
                 <button
                   id="filter-caution"
+                  role="tab"
+                  aria-selected={activeFilter === 'CAUTION'}
                   type="button"
                   onClick={() => setActiveFilter('CAUTION')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-amber-500 ${
                     activeFilter === 'CAUTION'
                       ? 'bg-amber-600 text-white shadow-xs'
                       : 'bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200/80'
                   }`}
                 >
-                  <AlertTriangle className="w-3.5 h-3.5" />
+                  <AlertTriangle className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>🟡 Caution ({counts.caution})</span>
                 </button>
                 <button
                   id="filter-safe"
+                  role="tab"
+                  aria-selected={activeFilter === 'SAFE'}
                   type="button"
                   onClick={() => setActiveFilter('SAFE')}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
                     activeFilter === 'SAFE'
                       ? 'bg-emerald-600 text-white shadow-xs'
                       : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200/80'
                   }`}
                 >
-                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <CheckCircle2 className="w-3.5 h-3.5" aria-hidden="true" />
                   <span>🟢 Safe ({counts.safe})</span>
                 </button>
               </div>
 
               {/* Clauses List */}
               {filteredClauses.length > 0 ? (
-                <div className="space-y-4">
+                <div className="space-y-4" role="feed" aria-label="Audited contract clauses">
                   {filteredClauses.map((clause, idx) => (
                     <ClauseCard
                       key={clause.id || idx}
@@ -466,11 +483,11 @@ export default function App() {
                   ))}
                 </div>
               ) : (
-                <div className="p-8 text-center bg-slate-50 rounded-xl border border-slate-200 text-slate-500 text-xs sm:text-sm">
+                <div role="status" className="p-8 text-center bg-slate-50 rounded-xl border border-slate-200 text-slate-500 text-xs sm:text-sm">
                   No clauses match your current filter or search criteria.
                 </div>
               )}
-            </div>
+            </section>
 
             {/* Section 3: Actionable Checklist & Next Steps + Required Disclaimer */}
             <ChecklistSection

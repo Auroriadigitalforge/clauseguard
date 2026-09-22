@@ -69,9 +69,12 @@ export const OverviewCard: React.FC<OverviewCardProps> = ({
   const strokeDashoffset = circumference - (fairnessScore / 100) * circumference;
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7 relative overflow-hidden">
+    <article
+      aria-label={`Audit overview for ${audit.documentTitle || documentType}`}
+      className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-6 sm:p-7 relative overflow-hidden"
+    >
       {/* Top Bar with Document Type & Quick Action Buttons */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+      <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
@@ -87,24 +90,25 @@ export const OverviewCard: React.FC<OverviewCardProps> = ({
         </div>
 
         {/* Action Controls */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2" role="toolbar" aria-label="Report export and action tools">
           {onDownloadPdf && (
             <button
               id="btn-download-pdf-report"
               type="button"
               onClick={onDownloadPdf}
               disabled={isGeneratingPdf}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white transition-all shadow-2xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-label="Download legal audit as PDF report"
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white transition-all shadow-2xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500"
               title="Generate and download full printable PDF report"
             >
               {isGeneratingPdf ? (
                 <>
-                  <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin shrink-0" />
+                  <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin shrink-0" aria-hidden="true" />
                   <span>Generating PDF...</span>
                 </>
               ) : (
                 <>
-                  <Download className="w-3.5 h-3.5 text-white shrink-0" />
+                  <Download className="w-3.5 h-3.5 text-white shrink-0" aria-hidden="true" />
                   <span>Download PDF</span>
                 </>
               )}
@@ -115,17 +119,18 @@ export const OverviewCard: React.FC<OverviewCardProps> = ({
             id="btn-copy-report-markdown"
             type="button"
             onClick={onCopyReport}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition-colors shadow-2xs cursor-pointer"
+            aria-label="Copy exact markdown report text to clipboard"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition-colors shadow-2xs cursor-pointer focus:outline-none focus:ring-2 focus:ring-slate-400"
             title="Copy exact markdown report"
           >
             {hasCopied ? (
               <>
-                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" aria-hidden="true" />
                 <span className="text-emerald-700 font-semibold">Copied!</span>
               </>
             ) : (
               <>
-                <Copy className="w-3.5 h-3.5 text-slate-500" />
+                <Copy className="w-3.5 h-3.5 text-slate-500" aria-hidden="true" />
                 <span>Copy Report</span>
               </>
             )}
@@ -135,9 +140,10 @@ export const OverviewCard: React.FC<OverviewCardProps> = ({
             id="btn-view-raw-markdown"
             type="button"
             onClick={onOpenMarkdownModal}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition-colors shadow-2xs cursor-pointer"
+            aria-label="View report in markdown format"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 transition-colors shadow-2xs cursor-pointer focus:outline-none focus:ring-2 focus:ring-slate-400"
           >
-            <FileText className="w-3.5 h-3.5 text-slate-500" />
+            <FileText className="w-3.5 h-3.5 text-slate-500" aria-hidden="true" />
             <span>Markdown View</span>
           </button>
 
@@ -145,10 +151,11 @@ export const OverviewCard: React.FC<OverviewCardProps> = ({
             id="btn-ask-a-lawyer"
             type="button"
             onClick={onOpenAskLawyer}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300/80 transition-colors shadow-2xs cursor-pointer"
+            aria-label="Open Ask a Lawyer consultation preparation module"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300/80 transition-colors shadow-2xs cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-500"
             title="Ask a Lawyer: Review common probing questions an attorney would ask about the flagged clauses"
           >
-            <Scale className="w-3.5 h-3.5 text-amber-700 shrink-0" />
+            <Scale className="w-3.5 h-3.5 text-amber-700 shrink-0" aria-hidden="true" />
             <span>Ask a Lawyer</span>
           </button>
 
@@ -156,13 +163,14 @@ export const OverviewCard: React.FC<OverviewCardProps> = ({
             id="btn-negotiate-email"
             type="button"
             onClick={onOpenNegotiationModal}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-900 hover:bg-slate-800 text-white transition-colors shadow-2xs cursor-pointer"
+            aria-label="Generate polite negotiation counter-proposal email"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-900 hover:bg-slate-800 text-white transition-colors shadow-2xs cursor-pointer focus:outline-none focus:ring-2 focus:ring-slate-900"
           >
-            <Mail className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Negotiation Script</span>
+            <Mail className="w-3.5 h-3.5" aria-hidden="true" />
+            <span>Generate Counter-Proposal</span>
           </button>
         </div>
-      </div>
+      </header>
 
       {/* Main Score & Summary Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-6 items-center">
@@ -265,6 +273,6 @@ export const OverviewCard: React.FC<OverviewCardProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 };

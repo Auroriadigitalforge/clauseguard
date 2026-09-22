@@ -76,15 +76,17 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Quick Sample Selector Bar */}
         <div className="mt-2.5 pt-2 border-t border-slate-100 flex flex-wrap items-center gap-2">
           <span className="text-xs font-semibold text-slate-600 flex items-center gap-1">
-            <Sparkles className="w-3 h-3 text-emerald-600" /> Quick Samples:
+            <Sparkles className="w-3 h-3 text-emerald-600" aria-hidden="true" /> Quick Samples:
           </span>
-          <div className="flex flex-wrap items-center gap-1.5">
+          <div className="flex flex-wrap items-center gap-1.5" role="toolbar" aria-label="Pre-loaded sample contracts">
             {samples.map((sample) => (
               <button
                 key={sample.id}
                 id={`sample-btn-${sample.id}`}
+                type="button"
+                aria-label={`Load sample: ${sample.title} (${sample.type})`}
                 onClick={() => onLoadSample(sample.id)}
-                className="text-xs px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200/80 text-slate-700 hover:text-slate-900 transition-colors border border-slate-200/80 font-medium"
+                className="text-xs px-2.5 py-1 rounded-md bg-slate-100 hover:bg-slate-200/80 text-slate-700 hover:text-slate-900 transition-colors border border-slate-200/80 font-medium focus:outline-none focus:ring-2 focus:ring-slate-400 cursor-pointer"
               >
                 {sample.title}
               </button>

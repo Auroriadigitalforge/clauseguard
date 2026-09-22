@@ -130,12 +130,19 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
         </div>
 
         {/* Tab Selection */}
-        <div className="flex items-center gap-1 bg-slate-200/60 p-1 rounded-lg self-start sm:self-auto">
+        <div
+          role="tablist"
+          aria-label="Document input method"
+          className="flex items-center gap-1 bg-slate-200/60 p-1 rounded-lg self-start sm:self-auto"
+        >
           <button
             id="tab-paste-text"
+            role="tab"
+            aria-selected={activeTab === 'text'}
+            aria-controls="panel-paste-text"
             type="button"
             onClick={() => setActiveTab('text')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all ${
+            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
               activeTab === 'text'
                 ? 'bg-white text-slate-900 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
@@ -145,9 +152,12 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
           </button>
           <button
             id="tab-upload-file"
+            role="tab"
+            aria-selected={activeTab === 'file'}
+            aria-controls="panel-upload-file"
             type="button"
             onClick={() => setActiveTab('file')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all ${
+            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
               activeTab === 'file'
                 ? 'bg-white text-slate-900 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
@@ -160,14 +170,28 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
 
       {/* File Upload Zone (when in File tab or dragging) */}
       {activeTab === 'file' ? (
-        <div className="p-5">
+        <div
+          id="panel-upload-file"
+          role="tabpanel"
+          aria-labelledby="tab-upload-file"
+          className="p-5"
+        >
           <div
             id="dropzone-area"
+            role="button"
+            tabIndex={0}
+            aria-label="Upload document file dropzone. Click to browse files or drag and drop a contract here."
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                fileInputRef.current?.click();
+              }
+            }}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current?.click()}
-            className={`border-2 border-dashed rounded-xl p-8 sm:p-12 text-center cursor-pointer transition-all ${
+            className={`border-2 border-dashed rounded-xl p-8 sm:p-12 text-center cursor-pointer transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500 ${
               isDragging
                 ? 'border-emerald-500 bg-emerald-50/50 scale-[0.99]'
                 : 'border-slate-300 hover:border-slate-400 bg-slate-50/30'
@@ -211,11 +235,17 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
       ) : null}
 
       {/* Direct Textarea */}
-      <div className={`p-4 sm:p-5 ${activeTab === 'file' && !documentText ? 'hidden' : 'block'}`}>
+      <div
+        id="panel-paste-text"
+        role="tabpanel"
+        aria-labelledby="tab-paste-text"
+        className={`p-4 sm:p-5 ${activeTab === 'file' && !documentText ? 'hidden' : 'block'}`}
+      >
         <div className="relative">
           <textarea
             id="contract-textarea"
             aria-label="Paste contract clauses or agreement text"
+            aria-describedby="contract-stats-counter"
             rows={activeTab === 'file' ? 6 : 10}
             placeholder="Paste contract clauses, residential lease terms, freelance scope of work, gym membership rules, or app terms of service here..."
             value={documentText}
@@ -227,17 +257,18 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
               id="clear-text-btn"
               type="button"
               onClick={onClear}
-              className="absolute top-3 right-3 text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-200/60 transition-colors"
+              aria-label="Clear document text input"
+              className="absolute top-3 right-3 text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-200/60 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400"
               title="Clear input"
             >
-              <X className="w-4 h-4" />
+              <X className="w-4 h-4" aria-hidden="true" />
             </button>
           )}
         </div>
 
         {/* Word count & action footer */}
         <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-500">
-          <div className="flex items-center gap-3">
+          <div id="contract-stats-counter" className="flex items-center gap-3">
             <span>
               <strong className="text-slate-700">{wordCount}</strong> words
             </span>
@@ -258,7 +289,9 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
             type="button"
             disabled={!canAudit}
             onClick={onAudit}
-            className={`inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-sm ${
+            aria-label={isLoading ? 'Auditing legal clauses in document' : 'Audit contract clauses with ClauseGuard'}
+            aria-busy={isLoading}
+            className={`inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-900 ${
               canAudit
                 ? 'bg-slate-900 hover:bg-slate-800 text-white hover:shadow-md cursor-pointer active:scale-[0.98]'
                 : 'bg-slate-200 text-slate-400 cursor-not-allowed'

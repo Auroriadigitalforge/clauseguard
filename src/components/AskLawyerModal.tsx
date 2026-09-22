@@ -406,6 +406,10 @@ Here is how counsel will break down this question during your consultation:`,
   return (
     <div
       id="ask-lawyer-modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="ask-lawyer-modal-title"
+      aria-describedby="ask-lawyer-modal-desc"
       className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5 animate-in fade-in duration-200"
     >
       <div
@@ -413,21 +417,21 @@ Here is how counsel will break down this question during your consultation:`,
         className="bg-white rounded-2xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden"
       >
         {/* Modal Top Header */}
-        <div className="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between bg-slate-900 text-white">
+        <header className="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between bg-slate-900 text-white">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-amber-500/20 border border-amber-400/30 flex items-center justify-center text-amber-400 shrink-0">
-              <Scale className="w-5 h-5" />
+              <Scale className="w-5 h-5" aria-hidden="true" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-bold text-white text-base tracking-tight">
+                <h3 id="ask-lawyer-modal-title" className="font-bold text-white text-base tracking-tight">
                   Ask a Lawyer (Consultation Prep)
                 </h3>
                 <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30">
                   Educational Simulation
                 </span>
               </div>
-              <p className="text-xs text-slate-300">
+              <p id="ask-lawyer-modal-desc" className="text-xs text-slate-300">
                 Common probing questions and strategic frameworks an attorney would raise about your contract
               </p>
             </div>
@@ -437,12 +441,13 @@ Here is how counsel will break down this question during your consultation:`,
             id="btn-close-ask-lawyer-modal"
             type="button"
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+            aria-label="Close Ask a Lawyer consultation modal"
+            className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-400"
             title="Close modal"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5" aria-hidden="true" />
           </button>
-        </div>
+        </header>
 
         {/* Legal Disclaimer Callout Banner */}
         <div className="px-4 py-3 bg-amber-50 border-b border-amber-200/90 text-amber-950 text-xs flex items-start gap-2.5">
@@ -617,6 +622,7 @@ Here is how counsel will break down this question during your consultation:`,
               <input
                 id="input-ask-lawyer-query"
                 type="text"
+                aria-label="Ask a strategic legal consultation preparation question"
                 value={inputQuery}
                 onChange={(e) => setInputQuery(e.target.value)}
                 placeholder="Ask about a clause (e.g. 'Can they keep my deposit?' or 'Is this non-compete valid?')..."
@@ -626,11 +632,12 @@ Here is how counsel will break down this question during your consultation:`,
             <button
               id="btn-submit-lawyer-query"
               type="submit"
+              aria-label="Submit question to consultation assistant"
               disabled={!inputQuery.trim()}
-              className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-semibold rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shrink-0 shadow-2xs"
+              className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-semibold rounded-xl flex items-center gap-1.5 transition-all cursor-pointer shrink-0 shadow-2xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <span>Ask</span>
-              <Send className="w-3.5 h-3.5" />
+              <Send className="w-3.5 h-3.5" aria-hidden="true" />
             </button>
           </form>
         </div>

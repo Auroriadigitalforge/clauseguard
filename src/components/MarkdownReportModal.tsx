@@ -41,42 +41,51 @@ export const MarkdownReportModal: React.FC<MarkdownReportModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="markdown-report-modal-title"
+      className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200"
+    >
       <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <header className="p-4 sm:p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50">
           <div className="flex items-center gap-2">
-            <FileText className="w-5 h-5 text-emerald-600" />
-            <h3 className="font-bold text-slate-900 text-base sm:text-lg">
+            <FileText className="w-5 h-5 text-emerald-600" aria-hidden="true" />
+            <h3 id="markdown-report-modal-title" className="font-bold text-slate-900 text-base sm:text-lg">
               ClauseGuard Assessment Report (Markdown)
             </h3>
           </div>
 
           <div className="flex items-center gap-2">
             {/* View Mode Switcher */}
-            <div className="flex items-center bg-slate-200/80 p-0.5 rounded-lg text-xs font-semibold">
+            <div role="tablist" aria-label="Report format mode" className="flex items-center bg-slate-200/80 p-0.5 rounded-lg text-xs font-semibold">
               <button
                 type="button"
+                role="tab"
+                aria-selected={viewMode === 'rendered'}
                 onClick={() => setViewMode('rendered')}
-                className={`px-2.5 py-1 rounded-md transition-all flex items-center gap-1.5 ${
+                className={`px-2.5 py-1 rounded-md transition-all flex items-center gap-1.5 focus:outline-none focus:ring-1 focus:ring-slate-400 ${
                   viewMode === 'rendered'
                     ? 'bg-white text-slate-900 shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                <Eye className="w-3.5 h-3.5" />
+                <Eye className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>Rendered</span>
               </button>
               <button
                 type="button"
+                role="tab"
+                aria-selected={viewMode === 'raw'}
                 onClick={() => setViewMode('raw')}
-                className={`px-2.5 py-1 rounded-md transition-all flex items-center gap-1.5 ${
+                className={`px-2.5 py-1 rounded-md transition-all flex items-center gap-1.5 focus:outline-none focus:ring-1 focus:ring-slate-400 ${
                   viewMode === 'raw'
                     ? 'bg-white text-slate-900 shadow-xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                <Code2 className="w-3.5 h-3.5" />
+                <Code2 className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>Raw Markdown</span>
               </button>
             </div>
@@ -87,13 +96,14 @@ export const MarkdownReportModal: React.FC<MarkdownReportModalProps> = ({
                 id="modal-download-pdf-btn"
                 onClick={onDownloadPdf}
                 disabled={isGeneratingPdf}
-                className="px-2.5 py-1 text-xs font-semibold rounded-md bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
+                aria-label="Download assessment report as PDF document"
+                className="px-2.5 py-1 text-xs font-semibold rounded-md bg-indigo-600 hover:bg-indigo-700 text-white flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 title="Download as clean printable PDF"
               >
                 {isGeneratingPdf ? (
-                  <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" aria-hidden="true" />
                 ) : (
-                  <Download className="w-3.5 h-3.5" />
+                  <Download className="w-3.5 h-3.5" aria-hidden="true" />
                 )}
                 <span>PDF</span>
               </button>
@@ -102,34 +112,37 @@ export const MarkdownReportModal: React.FC<MarkdownReportModalProps> = ({
             <button
               type="button"
               onClick={handleCopy}
-              className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 rounded-lg transition-colors cursor-pointer"
+              aria-label="Copy markdown report text to clipboard"
+              className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 rounded-lg transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-slate-400"
               title="Copy Markdown"
             >
               {hasCopied ? (
-                <Check className="w-4 h-4 text-emerald-600" />
+                <Check className="w-4 h-4 text-emerald-600" aria-hidden="true" />
               ) : (
-                <Copy className="w-4 h-4" />
+                <Copy className="w-4 h-4" aria-hidden="true" />
               )}
             </button>
 
             <button
               type="button"
               onClick={handleDownload}
-              className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 rounded-lg transition-colors cursor-pointer"
+              aria-label="Download markdown source file"
+              className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 rounded-lg transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-slate-400"
               title="Download .md file"
             >
-              <Download className="w-4 h-4" />
+              <Download className="w-4 h-4" aria-hidden="true" />
             </button>
 
             <button
               type="button"
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-lg transition-colors ml-1"
+              aria-label="Close report modal"
+              className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-lg transition-colors ml-1 focus:outline-none focus:ring-2 focus:ring-slate-400"
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5" aria-hidden="true" />
             </button>
           </div>
-        </div>
+        </header>
 
         {/* Content Area */}
         <div className="flex-1 overflow-y-auto p-6 sm:p-8 bg-slate-50/40">
